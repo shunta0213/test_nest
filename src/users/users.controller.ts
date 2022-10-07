@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Header,
 } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { UserEntity } from './entities/user.entity';
@@ -21,15 +22,16 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   // Require Authentication
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   @Post()
   @ApiCreatedResponse({ type: UserEntity })
+  @Header('Access-Control-Allow-Origin', 'http://localhost:3000')
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(createUserDto);
   }
 
   // Require Authentication
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
   @ApiOkResponse({ type: UserEntity })
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
@@ -37,7 +39,7 @@ export class UsersController {
   }
 
   // Require Authentication
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
   @ApiOkResponse({ type: UserEntity })
   remove(@Param('id') id: string) {
